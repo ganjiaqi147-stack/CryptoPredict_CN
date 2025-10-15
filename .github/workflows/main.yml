@@ -8,24 +8,26 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: 检出仓库代码
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: |
-        pip install pyinstaller pandas numpy matplotlib requests
+      - name: 安装依赖
+        run: |
+          pip install --upgrade pip
+          pip install pyinstaller
 
-    - name: Build EXE
-      run: |
-        pyinstaller --noconfirm --onefile --windowed --name "CryptoPredict" main.py
+      - name: 构建 EXE 文件
+        run: |
+          pyinstaller --onefile main.py
+        shell: bash
 
-    - name: Upload EXE
-      uses: actions/upload-artifact@v3
-      with:
-        name: CryptoPredict
-        path: dist/CryptoPredict.exe
+      - name: 上传构建结果
+        uses: actions/upload-artifact@v4
+        with:
+          name: CryptoPredict
+          path: dist/main.exe
